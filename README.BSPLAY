@@ -1,0 +1,83 @@
+Beigesoft™ bsplay is FFMPEG/GTK2 based multimedia player.
+
+Why BSPLAY?
+FFMPEG plus ALSA, Xorg (standard graphic and video libs) are enough for playing any audio/video file and Internet stream.
+ffmpeg's ffplay can play any media,
+but it's really needed to manage audio play lists.
+Also, GUI is mandatory for further mobile/tablet version of LFSC or for any other mobile Linux.
+BSPLAY's GUI is designed for using in mobile view.
+
+It requires FFMPEG compiled source code, e.g. file fftools/cmdutils.o!
+------------------------------------------
+Change log.
+
+v1.1
+*buffers increased to correctly import m3u
+*importing foreign m3u with escapes %20 %5B %5D in relative file path
+*fixed crash when list clearing
+*fixed crash when auto-switch to next from big video
+*subtitles settings default - SecondaryColour=0xFFFFFF00,BackColour=0x00000000,FontSize=20,Bold=300,Outline=1.3,Shadow=0.3,Spacing=1.5
+you can override ASS settings from command line, e.g.:
+bsplay :force_style=\'SecondaryColour=0xFFFFFF00,BackColour=0x00000000,FontSize=22,Bold=300,Outline=1.9,Shadow=1.6,Spacing=1.9,Blur=0.4\'
+
+v1.2
+fixed crash when close video window by hand, you can stop it only with pushing GUI's "stop" button
+fixed refresh GUI synchronization
+------------------------------------------
+To build it:
+0) if you have ffmpeg from main vendor (e.g. it's form Debian package, i.e. it's in /usr/lib folder), then uninstall it (e.g. apt-get uninstall ffmpeg)
+1) get ffmpeg-4.2.2 source code: http://ffmpeg.org/releases/ffmpeg-4.2.2.tar.xz.asc
+2) unpack it, build and install: (destination prefix should be /usr/local for any cases):
+ ./configure --prefix=/usr/local --enable-shared --disable-static --enable-gpl
+ # for subtitles and free mpeg encoder use --enable-libx264 --enable-libass, install libs for this, e.g. from main vendor packages: apt-get install libx264-dev libass-dev, otherwise see Beigesoft Linux From Source Code to install the libs from source code
+ # these flags are essential!: --enable-shared --disable-static
+ make
+ #as root:
+ make install
+ ldconfig
+3) after that unpack bsplay into ffmpeg source root folder (e.g. ffmpeg-4.2.2) and make:
+ make --file=Makefile.bsplay
+ make --file=Makefile.bsplay install-strip
+
+------------------------------------------
+features:
+* Adding set of files (including m3u lists) into play-list
+* Moving items inside play-list
+* Saving play-list into a m3u file
+* Loop all playing
+* Random playing
+* Subtitles file must has the same base name as video one to be opened automatically
+* Go to position HH:MM:SS (seek), it's useful to continue watching a video
+* It prevents screen-locking during playing or pause!
+* To play Internet stream, you need to add in a m3u list direct HTTP address (not m3u8)
+* During video playing, ffplay's hot-key interface is available (e.g. space - pause, right seek...)
+
+------------------------------------------
+
+sponsored by Beigesoft™ Enterprise Information System:
+https://www.facebook.com/Beigesoft-Accounting-All-In-One-40115090067724
+ or
+https://sites.google.com/site/beigesoftware
+
+Многие предприниматели записывают в блокнот или электронную таблицу информацию рода:
+* кто и сколько мне должен
+* кому и сколько я должен
+* за сколько я могу продать оборудование прямо сейчас
+...
+Читайте как наиболее эффективно вести коммерческий бухгалтерский учет:
+https://sites.google.com/site/beigesoftware/eis-iv
+
+Yesterday you sold merchandise in foreign currency, and exchange rate was 1.5.
+Today you received payment in foreign currency, and exchange rate is 1.2.
+How to properly record this?
+Read more about exchange gain or loss:
+https://sites.google.com/site/beigesoftware/eis-bobs-pizza/eis-multicurrency
+
+------------------------------------------
+licenses:
+BSD 2-Clause License
+https://sites.google.com/site/beigesoftware/bsd2csl
+
+file ffplay1.c is modified FFMPEG's ffplay.c:
+GNU Lesser General Public
+License as published by the Free Software Foundation; either version 2.1 of the License, or (at your option) any later version
