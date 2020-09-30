@@ -21,8 +21,10 @@ you can override ASS settings from command line, e.g.:
 bsplay :force_style=\'SecondaryColour=0xFFFFFF00,BackColour=0x00000000,FontSize=22,Bold=300,Outline=1.9,Shadow=1.6,Spacing=1.9,Blur=0.4\'
 
 v1.2
-fixed crash when close video window by hand, you can stop it only with pushing GUI's "stop" button
-fixed refresh GUI synchronization
+*fixed crash when close video window by hand, you can stop it only with pushing GUI's "stop" button
+*fixed refresh GUI synchronization
+*importing foreign m3u with any escapes in relative file path
+
 ------------------------------------------
 To build it:
 0) if you have ffmpeg from main vendor (e.g. it's form Debian package, i.e. it's in /usr/lib folder), then uninstall it (e.g. apt-get uninstall ffmpeg)

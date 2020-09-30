@@ -100,27 +100,6 @@ static int su_random_previous(int p_val) {
   return -1;
 }
 
-static char *su_strstr(char *p_in_str, char *p_what_str, int p_len) {
-  char *rez = NULL;
-  for (int i = 0; ; i++) {
-    if (p_in_str[i] == 0) {
-      break;
-    }
-    int is_mch = TRUE;
-    for (int j = 0; j < p_len; j++) {
-      if (p_in_str[i + j] != p_what_str[j]) {
-        is_mch = FALSE;
-        break;
-      }
-    }
-    if (is_mch) {
-      rez = (p_in_str + i);
-      break;
-    }
-  }
-  return rez;
-}
-
 /* get random next value */
 static int su_random_next(int p_val) {
   for (int i = 0; i < s_bsstpldtls.rows; i++) {
@@ -211,40 +190,32 @@ static int su_dialog_confirm(char *p_quest) {
   return FALSE;
 }
 
-static void su_escape_str(char *p_str) {
-//printf("path to fix: %s \n", p_str);
-  char *escp = su_strstr(p_str, "%20", 3);
-  while (escp != NULL) {
-    escp[0] = ' ';
-    for (int i = 1; ; i++) {
-      escp[i] = escp[i + 2];
-      if (escp[i] == '\0') {
-        break;
+static void
+  s_escape_str (char *pStr)
+{
+  for ( int i = 0; ; i++ )
+  {
+    if ( pStr[i] == 0 )
+                  { break; }
+    if ( pStr[i] == '%' )
+    {
+      if ( pStr[i + 1] == 0 )
+                  { break; }
+      char chr = 0;
+      int rd = sscanf (pStr + i + 1, "%2hhx",  &chr);
+      if ( rd != 1 )
+          { rd = sscanf (pStr + i + 1, "%2hhX",  &chr); }
+      if (rd == 1)
+      {
+        pStr[i] = chr;
+        for ( int j = i + 1; ; j++ )
+        {
+          pStr[j] = pStr[j + 2];
+          if ( pStr[j] == 0 )
+                  { break; }
+        }
       }
     }
-    escp = su_strstr(p_str, "%20", 3);
-  }
-  escp = su_strstr(p_str, "%5B", 3);
-  while (escp != NULL) {
-    escp[0] = '[';
-    for (int i = 1; ; i++) {
-      escp[i] = escp[i + 2];
-      if (escp[i] == '\0') {
-        break;
-      }
-    }
-    escp = su_strstr(p_str, "%5B", 3);
-  }
-  escp = su_strstr(p_str, "%5D", 3);
-  while (escp != NULL) {
-    escp[0] = ']';
-    for (int i = 1; ; i++) {
-      escp[i] = escp[i + 2];
-      if (escp[i] == '\0') {
-        break;
-      }
-    }
-    escp = su_strstr(p_str, "%5D", 3);
   }
 }
 
@@ -276,7 +247,7 @@ int su_read_m3u(GFile *p_file) {
           GFile *dir = g_file_get_parent(p_file);
           strcpy(s_sbuffer, g_file_get_path(dir));
           strcat(s_sbuffer, "/");
-          su_escape_str(pathb);
+          s_escape_str(pathb);
           strcat(s_sbuffer, pathb);
           pth = malloc((strlen(s_sbuffer) + 1) * sizeof(char));
           strcpy(pth, s_sbuffer);
