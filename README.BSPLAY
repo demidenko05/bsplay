@@ -32,12 +32,14 @@ To build it:
 2) unpack it, build and install: (destination prefix should be /usr/local for any cases):
  ./configure --prefix=/usr/local --enable-shared --disable-static --enable-gpl
  # for subtitles and free mpeg encoder use --enable-libx264 --enable-libass, install libs for this, e.g. from main vendor packages: apt-get install libx264-dev libass-dev, otherwise see Beigesoft Linux From Source Code to install the libs from source code
+ # --enable-libpulse if you have pulseaudio
  # these flags are essential!: --enable-shared --disable-static
  make
  #as root:
  make install
  ldconfig
-3) after that unpack bsplay into ffmpeg source root folder (e.g. ffmpeg-4.2.2) and make:
+3) install libgtk2-dev, e.g. apt-get install libgtk2.0-dev
+4) after that unpack bsplay into ffmpeg source root folder (e.g. ffmpeg-4.2.2) and make:
  make --file=Makefile.bsplay
  make --file=Makefile.bsplay install-strip
 
